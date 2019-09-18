@@ -9,15 +9,40 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         
-        <script>
-            window.onload = function (){
-                @if(session()->get('msg'))
-                alert('{ session()->get('msg') }');
-                @endif
-            }
+        <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous">
         </script>
     </head>
     <body>
+        
+        <script>
+        
+        function eliminarCategoria(idForm, destino){
+            dadosForm = $('#'+idForm).serialize();
+            $.ajax({
+                method: 'post',
+                url: destino,
+                data: dadosForm,
+                dataType: 'html',
+                success: function (data){
+                    //Ação de sucesso
+                    if(data == 'true'){
+                        alert('Categoria eliminada !');
+                    }else{
+                        alert('Não foi possível eliminar a categoria');
+                    }
+                },
+                error: function (argument){
+                    alert('Erro ao eliminar categoria!');
+                }
+            });
+            
+            return false;
+        }
+        
+        </script>
         
         <a href="{{route('categoria.create')}}">Adicionar Categoria</a><br/>
         
@@ -40,7 +65,7 @@
                     <td>{{$c->nomcat}}</td>
                     <td>
                         <button onclick="location.href='{{route('categoria.edit', $c->codcat)}}'" type="button">Editar</button>
-                        <form action="{{route('categoria.destroy', $c->codcat)}}" method="post">
+                        <form onsubmit="return eliminarCategoria('del{{$c->codcat}}','{{route('categoria.destroy', $c->codcat)}}');" id="del{{$c->codcat}}" action="{{route('categoria.destroy', $c->codcat)}}" method="post">
                             @csrf
                             @method('DELETE')
                             <button type="submit">Excluir</button>
