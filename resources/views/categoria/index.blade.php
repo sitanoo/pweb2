@@ -29,7 +29,7 @@
                 success: function (data){
                     //Ação de sucesso
                     if(data == 'true'){
-                        alert('Categoria eliminada !');
+                        $('#linha'+idForm).remove();
                     }else{
                         alert('Não foi possível eliminar a categoria');
                     }
@@ -60,7 +60,7 @@
                 
                 @foreach ($categorias as $c)
                 
-                <tr>
+                <tr id="linhadel{{$c->codcat}}">
                     <td>{{$c->codcat}}</td>
                     <td>{{$c->nomcat}}</td>
                     <td>
